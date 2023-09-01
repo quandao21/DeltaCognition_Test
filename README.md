@@ -64,7 +64,11 @@ python api\main.py
 ```
 
 ## 4. Running the Frontend
-
+Open new terminal and navigate to Web_Interface folder
+```
+python -m http.server 5500
+```
+*Note: The login security feature is under development. Use user 'admin' and password '123456' to login
 ## References
 [1] Raffel, C., Shazeer, N., Roberts, A., Lee, K., Narang, S., Matena, M., Zhou, Y., Li, W. and Liu, P. J. Raffel, C., Shazeer, N., Roberts, A., Lee, K., Narang, S., & Matena, M. et al. (2019). Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer. Retrieved 1 September 2023, from https://arxiv.org/abs/1910.10683v3
 
