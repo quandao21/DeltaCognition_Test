@@ -54,7 +54,7 @@ pip install -r api\requirements.txt
 **2.3. Download a summarized model**
 
 ```
-pip install -r saved_models\download_models.py
+python saved_models\download_models.py
 ```
 
 ## 3. Running API
