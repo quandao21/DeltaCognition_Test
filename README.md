@@ -10,6 +10,15 @@
 ![Image](materials/Workflow.png)	
 _Figure 1.1: Workflow of the project_
 
+In this project, my objective is to gather source material in the form of articles and scientific publications. The system will have the capability to extract data, particularly the abstracts, from both PDF documents and user-provided text inputs. Subsequently, this data will be subjected to summarization using the **T5 model**. Moreover, users will have the option to specify their research interests to the system. The system will employ the **sBERT model** to evaluate the similarity between the research topics and the summarized articles. Based on this evaluation, the system will provide recommendations on whether it is worthwhile for users to read a particular article or not.
+
+**T5 model**: A comprehensive tutorial for implementing T5 model can be found [here](https://huggingface.co/docs/transformers/model_doc/t5)
+
+**sBERT**: To evaluating similarity between 2 sentences, I define an architechture as show below .For each sentence pair, I pass sentence A and sentence B through my network which yields the embeddings u und v. The similarity of these embeddings is computed using cosine similarity and the result is compared to the gold similarity score. For BERT layer, I load a pre-trained SentenceTransformer models _'bert-base-uncased'_ from [HuggingFace](https://huggingface.co/models?library=sentence-transformers). A pooling layer, average all contextualized word embeddings BERT is giving us, gives a fixed 768 dimensional output vector independent how long the input text was. Finally, I add on top of the pooling layer a fully connected dense layer with Tanh activation, which performs a down-project to 256 dimensions. Due to the time limitation, I can not prepare my own dataset, so I used a [STS benchmark dataset](http://ixa2.si.ehu.eus/stswiki/index.php/STSbenchmark) for training model.
+
+![Image](materials/sBERT.png)	
+_Figure 1.2: sBERT architechture_
+
 ## 2. Set up for python
 
 Install Python [(Setup instructions)](https://wiki.python.org/moin/BeginnersGuide)
@@ -53,4 +62,9 @@ pip install -r saved_models\download_models.py
 python api\main.py
 ```
 
-## Running the Frontend
+## 4. Running the Frontend
+
+## References
+[1] Raffel, C., Shazeer, N., Roberts, A., Lee, K., Narang, S., Matena, M., Zhou, Y., Li, W. and Liu, P. J. Raffel, C., Shazeer, N., Roberts, A., Lee, K., Narang, S., & Matena, M. et al. (2019). Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer. Retrieved 1 September 2023, from https://arxiv.org/abs/1910.10683v3
+
+[2] Reimers, N. and Gurevych, I. Reimers, N., & Gurevych, I. (2019). Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks. Retrieved 1 September 2023, from https://arxiv.org/abs/1908.10084
