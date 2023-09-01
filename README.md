@@ -7,7 +7,9 @@
 
 **1.2. Work Flow:**
 
-![Image]('materials\Workflow.png')	
+![Image](materials/Workflow.png)	
+_Figure 1.1: Workflow of the project_
+
 ## 2. Set up for python
 
 Install Python [(Setup instructions)](https://wiki.python.org/moin/BeginnersGuide)
@@ -15,38 +17,40 @@ Install Python [(Setup instructions)](https://wiki.python.org/moin/BeginnersGuid
 **2.1. Create virtual environment**
 
 If python's version is older than 3.3
-'''
+```
 pip install virtualenv
-'''
+```
 Create {env} virtual environment
-'''
+```
 python -m venv {env}
+```
 
-'''
 Activate virtual environment:
 * Windows:
-'''
+```
 .\{env}\Scripts\activate
-'''
+```
 * macOS and Linux:
-'''
-source env/bin/activate
+```
+source {env}/bin/activate
+```
 
-'''
 **2.2. Install necessary libraries**
 
-'''
+```
 pip install -r api\requirements.txt
-'''
+```
+
 **2.3. Download a summarized model**
 
-'''
+```
 pip install -r saved_models\download_models.py
-'''
+```
 
 ## 3. Running API
-'''
+
+```
 python api\main.py
-'''
+```
 
 ## Running the Frontend
