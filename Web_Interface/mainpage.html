@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Dashboard</title>
+    <style>
+      button {
+        width: 350px; 
+        height: 40px;
+        border: none; 
+        border-radius: 8px; 
+        font-size: 22px; 
+        background-color: #4267B2; 
+        color: white;
+      }
+      h1{
+        text-align: center; 
+        color: #4267B2;
+      }
+    </style>
+</head>
+
+<body>
+  <div style="display: flex; flex-direction: row; height: 100vh;">
+    <div style="width: 50%; text-align: center;">
+      <h1>SUMMARIZE FROM PDF FILE</h1>
+      <div class="drop-area" id="dropArea" style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer;">
+        <p>Drop or click to upload a PDF file</p>
+        <input type="file" id="fileInput" accept=".pdf">
+        
+      </div>
+      <br>
+      <button id="submitButton" type="submit" >
+        Upload and Extract</button>
+      <h1> SUMMARIZE FORM TEXT</h1>
+      <form action="#" method="POST" style="text-align: center;">
+        <textarea id="text-input" name="user_text" style="width: 400px; height: 300px;"></textarea><br><br>
+      </form>
+      <button type="submit" value="Submit" id="submitTextButton">
+        Extract</button>
+    </div>
+    <div style="background-color: #ccc; width: 50%; text-align: center;">
+      <h1>ABSTRACTIVE SUMMARIZATION</h1>
+      <div  class="text-box" style="border: 2px solid #007bff;">
+        <p id="summaryTextArea"></p>
+      </div>
+    <div>
+      <h1>TYPE YOUR RESEARCH INTERESTS</h1>
+      <form action="#" method="POST" style="text-align: center;">
+        <textarea id="research-input" name="user_text" style="width: 400px; height: 150px;"></textarea><br><br>
+      </form>
+      <button type="submit" value="Submit" id="evaluateButton">Evaluate</button>
+    </div>
+    </div>
+
+  </div>
+
+  <script>
+    const dropArea = document.getElementById("dropArea");
+    const fileInput = document.getElementById("fileInput");
+    const submitButton = document.getElementById('submitButton');
+    const submitTextButton = document.getElementById('submitTextButton');
+    const summaryTextArea = document.getElementById('summaryTextArea');
+    const textInput = document.getElementById('text-input');
+    const evaluateButton = document.getElementById('evaluateButton');
+    const researchInput = document.getElementById('research-input');
+
+
+  
+    dropArea.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      dropArea.style.borderColor = "blue";
+    });
+  
+    dropArea.addEventListener("dragleave", (e) => {
+      e.preventDefault();
+      dropArea.style.borderColor = "#ccc";
+    });
+  
+    dropArea.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dropArea.style.borderColor = "#ccc";
+      const file = e.dataTransfer.files[0];
+      handleFile(file);
+    });
+  
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files[0];
+      handleFile(file);
+    });
+        // Handle submit button click event
+    submitButton.addEventListener('click', () => {
+        handleFileUpload();
+    });
+    submitTextButton.addEventListener('click', async () => {
+      const userInput = textInput.value;
+      // console.log(userInput);
+      const response = await fetch('http://localhost:8000/read_text', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ text: userInput }),
+      });
+      console.log('sent!')
+      if (response.ok) {
+          const result = await response.json();
+          const summary = result.summary;
+
+          summaryTextArea.textContent = summary;
+      } else {
+          console.error('Text submission failed:', response.status, response.statusText);
+      }
+  });
+  evaluateButton.addEventListener('click', async () => {
+    const userContentInput = researchInput.value;
+    const summarizedInput = summaryTextArea.textContent;
+    console.log(userContentInput);
+    console.log(summarizedInput);
+
+    const response = await fetch('http://localhost:8000/evaluate_similarity', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ content: userContentInput, summary: summarizedInput }),
+      });
+      if (response.ok) {
+          const result = await response.json();
+          const summary = result.score;
+          const recommendation = result.recommendation;
+
+          console.log(summary);
+          // Display the summary value in a popup box
+          window.alert(`Similarity Score(From -1 to 1): ${summary}\n${recommendation}`);
+      } else {
+          console.error('Text submission failed:', response.status, response.statusText);
+      }
+  });
+    function handleFile(file) {
+      if (file.type === "application/pdf") {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const pdfData = e.target.result;
+          // Do something with the PDF data, like displaying it or processing it
+          // console.log("PDF data:", pdfData);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        alert("Please select a PDF file.");
+      }
+    }
+
+        // Function to handle file upload
+        async function handleFileUpload() {
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            const response = await fetch('http://localhost:8000/read_PDF', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Summary:', result.summary);
+                summaryTextArea.textContent = 'Summary: '+ result.summary;
+            } else {
+                console.error('Upload failed:', response.status, response.statusText);
+            }
+        }
+  </script>
+</body>
+</html>

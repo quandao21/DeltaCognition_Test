@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+transformers
+sentencepiece
+protobuf
+python-multipart
+PyMuPDF
+torch
+torchvision
+torchaudio
+Pillow==9.5.0
+sentence-transformers
+gdown
