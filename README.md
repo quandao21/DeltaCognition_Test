@@ -16,7 +16,8 @@ In this project, my objective is to gather source material in the form of articl
 
 **sBERT**: To evaluating similarity between 2 sentences, I define an architechture as show below .For each sentence pair, I pass sentence A and sentence B through my network which yields the embeddings u und v. The similarity of these embeddings is computed using cosine similarity and the result is compared to the gold similarity score. For BERT layer, I load a pre-trained SentenceTransformer models _'bert-base-uncased'_ from [HuggingFace](https://huggingface.co/models?library=sentence-transformers). A pooling layer, average all contextualized word embeddings BERT is giving us, gives a fixed 768 dimensional output vector independent how long the input text was. Finally, I add on top of the pooling layer a fully connected dense layer with Tanh activation, which performs a down-project to 256 dimensions. Due to the time limitation, I can not prepare my own dataset, so I used a [STS benchmark dataset](http://ixa2.si.ehu.eus/stswiki/index.php/STSbenchmark) for training model.
 
-![Image](materials/sBERT.png)	
+![Image](materials/sBERT.jpg)	
+
 _Figure 1.2: sBERT architechture_
 
 ## 2. Set up for python
